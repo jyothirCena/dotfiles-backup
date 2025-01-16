@@ -14,7 +14,7 @@ final_space = true
   template = "{{ if .WSL }}WSL at {{ end }}{{.Icon}}"
   type = "os"
 
-	[[blocks.segments]]
+  [[blocks.segments]]
 	type = "session"
 	style = "diamond"
   background = "p:surface0"
