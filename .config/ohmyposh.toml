@@ -1,0 +1,121 @@
+version = 3
+final_space = true
+
+[[blocks]]
+  type = 'prompt'
+  newline = true
+  alignment = 'left'
+ 
+  [[blocks.segments]]
+  background = "p:surface0"
+  foreground = "p:text"
+  leading_diamond = ""
+  style = "diamond"
+  template = "{{ if .WSL }}WSL at {{ end }}{{.Icon}}"
+  type = "os"
+
+	[[blocks.segments]]
+	type = "session"
+	style = "diamond"
+  background = "p:surface0"
+  foreground = "p:text"
+  trailing_diamond = ""
+  template = " {{ .UserName }} "
+
+  [[blocks.segments]]
+  background = "p:dir_bg" ##7287fd
+  foreground = "p:base"
+  trailing_diamond = ""
+  style = "diamond"
+  template = " {{ if eq .Output .Env.PWD}} {{ else }} {{ end }} "
+  type = "command"
+  	
+  	[blocks.segments.properties]
+  	shell = "zsh"
+  	command = "echo $HOME"
+
+  [[blocks.segments]]
+  background = "p:blue"
+  foreground = "p:mantle"
+  trailing_diamond = ""
+  style = "diamond"
+  template = " {{ .Path }} "
+  type = "path"
+
+    [blocks.segments.properties]
+    home_icon = "~"
+    style = "full"
+  
+[[blocks]]
+  type = 'rprompt'
+  alignment = 'right'
+  
+  [[blocks.segments]]
+  background_templates = ["p:crust"]
+  invert_powerline = true
+  powerline_symbol = ""
+  style = "powerline"
+  template = " {{ if gt .Code 0 }}<red>✘</>{{ else }}<green>✔</>{{ end }} "
+  type = "status"
+
+    [blocks.segments.properties]
+    always_enabled = true
+
+  [[blocks.segments]]
+  background = "p:exec_time"
+  foreground = "p:mantle"
+  invert_powerline = true
+  powerline_symbol = ""
+  style = "powerline"
+  template = " {{ .FormattedMs }}  "
+  type = "executiontime"
+    
+		[blocks.segments.properties]
+    threshold = 2000
+    style = "round"
+
+  [[blocks.segments]]
+  background = "p:time_bg"
+  foreground = "p:text"
+  invert_powerline = true
+  style = "diamond"
+  template = " {{ .CurrentDate | date .Format }}  "
+  trailing_diamond = ""
+  type = "time"
+
+    [blocks.segments.properties]
+    time_format = "03:04 PM"	
+		
+
+	[palette]
+  rosewater = "#f5e0dc"
+	flamingo  = "#f2cdcd"
+	pink      = "#f5c2e7"
+	mauvae    = "#cba6f7"
+	red       = "#f38ba8"
+	maroon    = "#eba0ac"
+	peach     = "#fab387"
+	yellow    = "#f9e2af"
+	green     = "#a6e3a1"
+	teal      = "#94e1d5"
+	sky       = "#89dceb"
+	sapphire  = "#74c7ec"
+	blue      = "#89b4fa"
+	lavender  = "#b4befe"
+	text      = "#cdd6f4"
+	subtext1  = "#bac2de"
+	subtext0  = "#a6adc8"
+	overlay2  = "#9399b2"
+	overlay1  = "#7f849c"
+	overlay0  = "#6c7086"
+	surface2  = "#585b70"
+	surface1  = "#45475a"
+	surface0  = "#313244"
+	base      = "#1e1e2e"
+	mantle    = "#181825"
+	crust     = "#11111b"
+  time_bg   = "#414559"
+  exec_time = "#fbf1c7"
+  dir_bg    = "#7287fd"
+
+
