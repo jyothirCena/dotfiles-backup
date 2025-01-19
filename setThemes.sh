@@ -6,7 +6,7 @@ sudo apt update && sudo apt upgrade -y
 
 # Install required packages
 echo "Installing required packages..."
-sudo apt install -y git tar curl gnome-tweaks gnome-shell-extension-manager
+sudo apt install -y git tar curl gnome-tweaks gnome-shell-extensions gnome-shell-extension-manager
 
 # Start the script in home
 cd ~
@@ -109,5 +109,21 @@ gsettings set org.gnome.desktop.interface cursor-theme "macOS"
 # Center new windows
 echo "Enable to open windows centered by default..."
 gsettings set org.gnome.mutter center-new-windows true
+
+# Modify dash to dock extension
+echo "Modify dock appearance..."
+gsettings set org.gnome.shell.extensions.dash-to-dock dock-position "BOTTOM"
+gsettings set org.gnome.shell.extensions.dash-to-dock extend-height false
+gsettings set org.gnome.shell.extensions.dash-to-dock dock-fixed false
+gsettings set org.gnome.shell.extensions.dash-to-dock click-action "focus-minimize-or-previews"
+gsettings set org.gnome.shell.extensions.dash-to-dock autohide-in-fullscreen true
+gsettings set org.gnome.shell.extensions.dash-to-dock require-pressure-to-show false
+gsettings set org.gnome.shell.extensions.dash-to-dock show-dock-urgent-notify false
+gsettings set org.gnome.shell.extensions.dash-to-dock transparency-mode "DYNAMIC"
+gsettings set org.gnome.shell.extensions.dash-to-dock customize-alphas true
+gsettings set org.gnome.shell.extensions.dash-to-dock show-mounts-only-mounted true
+gsettings set org.gnome.shell.extensions.dash-to-dock show-mounts-network false
+gsettings set org.gnome.shell.extensions.dash-to-dock show-icons-emblems false
+gsettings set org.gnome.shell.extensions.dash-to-dock dance-urgent-applications false
 
 echo "Installation completed successfully!"
