@@ -112,18 +112,20 @@ gsettings set org.gnome.mutter center-new-windows true
 
 # Modify dash to dock extension
 echo "Modify dock appearance..."
+gsettings set org.gnome.shell.extensions.dash-to-dock application-counter-overrides-notifications false
+gsettings set org.gnome.shell.extensions.dash-to-dock autohide-in-fullscreen true
+gsettings set org.gnome.shell.extensions.dash-to-dock click-action "focus-minimize-or-previews"
+gsettings set org.gnome.shell.extensions.dash-to-dock customize-alphas true
+gsettings set org.gnome.shell.extensions.dash-to-dock dance-urgent-applications false
+gsettings set org.gnome.shell.extensions.dash-to-dock dock-fixed false
 gsettings set org.gnome.shell.extensions.dash-to-dock dock-position "BOTTOM"
 gsettings set org.gnome.shell.extensions.dash-to-dock extend-height false
-gsettings set org.gnome.shell.extensions.dash-to-dock dock-fixed false
-gsettings set org.gnome.shell.extensions.dash-to-dock click-action "focus-minimize-or-previews"
-gsettings set org.gnome.shell.extensions.dash-to-dock autohide-in-fullscreen true
 gsettings set org.gnome.shell.extensions.dash-to-dock require-pressure-to-show false
 gsettings set org.gnome.shell.extensions.dash-to-dock show-dock-urgent-notify false
-gsettings set org.gnome.shell.extensions.dash-to-dock transparency-mode "DYNAMIC"
-gsettings set org.gnome.shell.extensions.dash-to-dock customize-alphas true
-gsettings set org.gnome.shell.extensions.dash-to-dock show-mounts-only-mounted true
-gsettings set org.gnome.shell.extensions.dash-to-dock show-mounts-network false
 gsettings set org.gnome.shell.extensions.dash-to-dock show-icons-emblems false
-gsettings set org.gnome.shell.extensions.dash-to-dock dance-urgent-applications false
+gsettings set org.gnome.shell.extensions.dash-to-dock show-icons-notifications-counter false
+gsettings set org.gnome.shell.extensions.dash-to-dock show-mounts-network false
+gsettings set org.gnome.shell.extensions.dash-to-dock show-mounts-only-mounted true
+gsettings set org.gnome.shell.extensions.dash-to-dock transparency-mode "DYNAMIC"
 
 echo "Installation completed successfully!"
