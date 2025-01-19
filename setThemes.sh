@@ -6,89 +6,89 @@ sudo apt update && sudo apt upgrade -y
 
 # Install required packages
 echo "Installing required packages..."
-sudo apt install -y git curl gnome-tweaks gnome-shell-extension-manager tar
+sudo apt install -y git tar curl gnome-tweaks gnome-shell-extension-manager
+
+# Start the script in home
+cd ~
 
 # Clone the WhiteSur theme repository
 echo "Cloning the WhiteSur GTK theme repository..."
 git clone https://github.com/vinceliuice/WhiteSur-gtk-theme.git
 
-# Change directory to the cloned repository
-echo "Entering the cloned WhiteSur GTK theme directory..."
-cd WhiteSur-gtk-theme
-
 # Run the theme installation script
 echo "Installing the WhiteSur GTK theme..."
-./install.sh -l -m -N stable --round
-
-# Move into the themes directory
-echo "Changing to the ~/.themes directory..."
-cd ~/.themes
+~/WhiteSur-gtk-theme/install.sh -l -m -N stable --round
 
 # Move the WhiteSur-Dark theme to the global themes directory
 echo "Moving WhiteSur-Dark theme to /usr/share/themes..."
-sudo mv WhiteSur-Dark /usr/share/themes
+sudo mv ~/.themes/WhiteSur-Dark /usr/share/themes
 
 # Remove .themes folder to clean up
 echo "Cleaning up the ~/.themes folder..."
 rm -rf ~/.themes
 
+# Wait 2 seconds
+sleep 2
+
 # Download the macOS cursor tarball
 echo "Downloading the macOS cursor tarball..."
-curl -L -o macOS.tar.xz https://github.com/ful1e5/apple_cursor/releases/download/v2.0.1/macOS.tar.xz
+curl -O https://raw.githubusercontent.com/jyothirCena/assets/refs/heads/main/macOS.tar.gz
 
 # Unzip the tarball into /usr/share/icons
 echo "Extracting and moving the macOS cursor theme to /usr/share/icons..."
-mkdir ~/macOS
-tar -xf macOS.tar.xz -C ~/macOS
+tar -xzf macOS.tar.gz
 
-# Move only 'macOS' folder to /usr/share/icons
-sudo mv ~/macOS/macOS /usr/share/icons
+# Move macOS folders to /usr/share/icons
+sudo cp -r ~/macOS/* /usr/share/icons
 
 # Cleanup stuff related to macOS-cursor theme
-echo "Cleaning up..."
-rm macOS.tar.xz
+echo "macOS cursor theme clean up"
+rm macOS.tar.gz
 rm -r ~/macOS
 
-# Clone the Cupertino-Sonoma icon pack repository
+# Wait 2 seconds
+sleep 2
+
+# Download the Cupertino-Sonoma icon pack repository
 echo "Cloning the Cupertino-Sonoma icon pack repository..."
-git clone https://github.com/USBA/Cupertino-Sonoma-iCons.git
+curl -O https://raw.githubusercontent.com/jyothirCena/assets/refs/heads/main/Cupertino-Sonoma.tar.xz
 
-# Rename the folder
-echo "Renaming the Cupertino-Sonoma icon pack folder..."
-mv Cupertino-Sonoma-iCons Cupertino-Sonoma
+# Unzip the tarball
+echo "Extracting and moving the Cupertino-Sonoma icon pack to /usr/share/icons..."
+tar -xf Cupertino-Sonoma.tar.xz
 
-# Move the renamed folder to /usr/share/icons
-echo "Moving the Cupertino-Sonoma icon pack to /usr/share/icons..."
+# Move the Cupertino-Sonoma icon pack folder to /usr/share/icons
 sudo mv Cupertino-Sonoma /usr/share/icons
+rm Cupertino-Sonoma.tar.xz
+
+# Wait 2 seconds
+sleep 2
 
 # Install and enable the User Themes extension
 echo "Installing the User Themes extension..."
 
 # Define variables
 EXTENSION_UUID="user-theme@gnome-shell-extensions.gcampax.github.com"
-EXTENSION_URL="https://extensions.gnome.org/extension-data/user-themegnome-shell-extensions.gcampax.github.com.v44.shell-extension.zip"
 
-# Create extensions directory if not present
-mkdir -p ~/.local/share/gnome-shell/extensions
-
-# Download the extension
-echo "Downloading the User Themes extension..."
-curl -o "${EXTENSION_UUID}.zip" "$EXTENSION_URL"
-
-# Extract the extension to the correct directory
+# Installing the extension
 echo "Installing the User Themes extension..."
-unzip -o "${EXTENSION_UUID}.zip" -d ~/.local/share/gnome-shell/extensions/"${EXTENSION_UUID}"
+gdbus call --session --dest org.gnome.Shell.Extensions --object-path /org/gnome/Shell/Extensions --method org.gnome.Shell.Extensions.InstallRemoteExtension 'user-theme@gnome-shell-extensions.gcampax.github.com'
 
-# Enable the extension
-echo "Enabling the User Themes extension..."
-gnome-extensions enable "${EXTENSION_UUID}"
+# Waiting for user confirmation
+echo "Waiting for user to confirm the extension installation in GNOME Shell..."
+while true; do
+    # Check if the extension is installed and enabled
+    EXTENSION_STATUS=$(gnome-extensions info ${EXTENSION_UUID} | grep Enabled | awk '{print $2}')
+    
+    # If the extension is enabled (meaning it was installed and confirmed), break out of loop
+    if [ "$EXTENSION_STATUS" = "Yes" ]; then
+        echo "Extension '$EXTENSION_UUID' is confirmed as installed and enabled."
+        break
+    fi
 
-# Clean up
-echo "Cleaning up downloaded files..."
-rm -f "${EXTENSION_UUID}.zip"
-
-echo "Enabling the User Themes extension..."
-gnome-extensions enable user-theme@gnome-shell-extensions.gcampax.github.com
+    # Wait for a short duration before checking again
+    sleep 5
+done
 
 # Set the GTK theme
 echo "Setting the GTK theme to WhiteSur-Dark..."
@@ -105,5 +105,9 @@ gsettings set org.gnome.desktop.interface icon-theme "Cupertino-Sonoma"
 # Set the cursor theme
 echo "Setting the cursor theme to macOS..."
 gsettings set org.gnome.desktop.interface cursor-theme "macOS"
+
+# Center new windows
+echo "Enable to open windows centered by default..."
+gsettings set org.gnome.mutter center-new-windows true
 
 echo "Installation completed successfully!"
